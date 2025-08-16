@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIGC作品集 | 完整展示</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo 2', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-bg: #0f0f1a;
+            --secondary-bg: #1a1a2e;
+            --card-bg: rgba(22, 33, 62, 0.85);
+            --accent: #4cc9f0;
+            --accent-dark: #4361ee;
+            --accent-light: #90e0ef;
+            --text: #f8f9fa;
+            --text-secondary: #adb5bd;
+        }
+
+        body {
+            background: var(--primary-bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(67, 97, 238, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, rgba(76, 201, 240, 0.15) 0%, transparent 25%),
+                linear-gradient(135deg, rgba(15, 15, 26, 0.9) 0%, rgba(26, 26, 46, 0.9) 100%);
+            z-index: -2;
+        }
+
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(76, 201, 240, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(76, 201, 240, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(76, 201, 240, 0.6);
+            box-shadow: 0 0 10px rgba(76, 201, 240, 0.8);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(10, 10, 20, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(76, 201, 240, 0.2);
+            transition: all 0.4s ease;
+        }
+
+        header.scrolled {
+            padding: 12px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            letter-spacing: 1px;
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.1;
+            text-shadow: 0 5px 15px rgba(76, 201, 240, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 35px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 300;
+        }
+
+        /* 增强标签文字可见性 */
+        .tagline {
+            display: inline-block;
+            background: rgba(76, 201, 240, 0.3); /* 增加透明度 */
+            color: white; /* 改为白色文字 */
+            padding: 12px 30px; /* 增加内边距 */
+            border-radius: 30px;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            border: 1px solid var(--accent);
+            font-weight: 600; /* 加粗字体 */
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(76, 201, 240, 0.3); /* 增强发光效果 */
+            animation: pulse 2s infinite;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 15px rgba(76, 201, 240, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(76, 201, 240, 0.5); }
+            100% { box-shadow: 0 0 15px rgba(76, 201, 240, 0.3); }
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--accent);
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
+            40% {transform: translateY(-20px) translateX(-50%);}
+            60% {transform: translateY(-10px) translateX(-50%);}
+        }
+
+        .categories {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .categories::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 26, 46, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: -1;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--accent-light);
+            width: 100%;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            margin: 15px auto 0;
+            width: 50%;
+            max-width: 300px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            border-radius: 2px;
+        }
+
+        .category-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 50px;
+        }
+
+        .filter-btn {
+            background: rgba(76, 201, 240, 0.1);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 12px 28px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            font-weight: 500;
+            backdrop-filter: blur(5px);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent);
+            color: var(--primary-bg);
+            box-shadow: 0 0 20px rgba(76, 201, 240, 0.7);
+            transform: translateY(-3px);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 35px;
+            padding: 40px 0;
+        }
+
+        .portfolio-item {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s ease;
+            position: relative;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(76, 201, 240, 0.2);
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(76, 201, 240, 0.3);
+            border-color: var(--accent);
+        }
+
+        /* 图片轮播容器 */
+        .portfolio-carousel {
+            height: 300px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 100%;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 5;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .carousel-dot.active {
+            background: var(--accent);
+            box-shadow: 0 0 8px rgba(76, 201, 240, 0.8);
+        }
+
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            transition: all 0.3s;
+            opacity: 0.7;
+        }
+
+        .carousel-arrow:hover {
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 1;
+        }
+
+        .carousel-prev {
+            left: 15px;
+        }
+
+        .carousel-next {
+            right: 15px;
+        }
+
+        .portfolio-info {
+            padding: 25px;
+        }
+
+        .portfolio-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            color: var(--accent-light);
+            font-weight: 600;
+        }
+
+        .portfolio-info .category {
+            display: inline-block;
+            background: rgba(76, 201, 240, 0.15);
+            color: var(--accent);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .portfolio-info p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .image-count {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .view-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: rgba(76, 201, 240, 0.15);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .view-btn:hover {
+            background: var(--accent);
+            color: var(--primary-bg);
+            box-shadow: 0 0 15px rgba(76, 201, 240, 0.5);
+        }
+
+        footer {
+            background: rgba(10, 10, 20, 0.95);
+            padding: 60px 0 30px;
+            margin-top: 50px;
+            border-top: 1px solid rgba(76, 201, 240, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--accent-light);
+            position: relative;
+            padding-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .footer-section p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .footer-section p i {
+            width: 25px;
+            color: var(--accent);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: rgba(76, 201, 240, 0.15);
+            color: var(--accent);
+            border-radius: 50%;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+            border: 1px solid rgba(76, 201, 240, 0.3);
+        }
+
+        .social-links a:hover {
+            background: var(--accent);
+            color: var(--primary-bg);
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(76, 201, 240, 0.5);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        /* 图片模态框 - 提高z-index */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1003; /* 高于项目模态框 */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            overflow: auto;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 80vh;
+            display: block;
+            margin: 0 auto;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(76, 201, 240, 0.3);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--accent);
+        }
+
+        .image-info {
+            text-align: center;
+            color: white;
+            margin-top: 15px;
+            font-size: 1.1rem;
+        }
+
+        /* 项目详情模态框 */
+        .project-modal {
+            display: none;
+            position: fixed;
+            z-index: 1002; /* 低于图片模态框 */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            overflow: auto;
+        }
+
+        .project-modal-content {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(76, 201, 240, 0.3);
+        }
+
+        .project-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            color: var(--accent);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .project-modal-close:hover {
+            transform: rotate(90deg);
+            color: var(--accent-light);
+        }
+
+        .project-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .project-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--accent-light);
+        }
+
+        .project-category {
+            display: inline-block;
+            background: rgba(76, 201, 240, 0.2);
+            color: var(--accent);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .project-description {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .project-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .project-image {
+            border-radius: 10px;
+            overflow: hidden;
+            height: 250px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .project-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .decor {
+            position: absolute;
+            z-index: -1;
+        }
+
+        .decor-1 {
+            top: 20%;
+            left: 5%;
+            width: 150px;
+            height: 150px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: pulse 6s infinite;
+        }
+
+        .decor-2 {
+            bottom: 25%;
+            right: 10%;
+            width: 100px;
+            height: 100px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: pulse 8s infinite;
+        }
+
+        .decor-3 {
+            top: 40%;
+            right: 15%;
+            width: 200px;
+            height: 200px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            opacity: 0.05;
+            animation: pulse 10s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.1; }
+            50% { transform: scale(1.2); opacity: 0.05; }
+        }
+
+        /* 加载指示器 */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 26, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .spinner {
+            width: 80px;
+            height: 80px;
+            border: 8px solid rgba(76, 201, 240, 0.2);
+            border-top: 8px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            color: var(--accent);
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(76, 201, 240, 0.2);
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 99;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--accent);
+            color: var(--primary-bg);
+            box-shadow: 0 0 15px rgba(76, 201, 240, 0.5);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .project-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .portfolio-carousel {
+                height: 250px;
+            }
+
+            .project-modal-content {
+                margin: 60px 20px;
+                padding: 20px;
+            }
+
+            .project-header h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+
+            .tagline {
+                font-size: 1rem;
+                padding: 8px 20px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .filter-btn {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .portfolio-carousel {
+                height: 220px;
+            }
+
+            .project-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 加载指示器 -->
+    <div class="loading" id="loading">
+        <div>
+            <div class="spinner"></div>
+            <div class="loading-text">加载作品中...</div>
+        </div>
+    </div>
+
+    <div class="bg-overlay"></div>
+    <div class="bg-grid"></div>
+    <div class="particles" id="particles"></div>
+
+    <div class="decor decor-1"></div>
+    <div class="decor decor-2"></div>
+    <div class="decor decor-3"></div>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <header id="header">
+        <div class="container nav-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                AIGC作品集
+            </div>
+            <nav class="nav-links">
+                <a href="#portfolio">作品集</a>
+                <a href="#about">关于我</a>
+                <a href="#process">创作流程</a>
+                <a href="#contact">联系</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="tagline">AI创意设计 · ComfyUI工作流</div>
+            <h1>欢迎来到我的作品集</h1>
+            <p>探索由AI生成的艺术作品，展示在儿童摄影、IP设计、电商展示等领域的创新应用。所有作品使用ComfyUI工作流程创建。</p>
+        </div>
+        <div class="scroll-down" id="scrollDown">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <section id="portfolio" class="categories">
+        <div class="container">
+            <h2 class="section-title">作品分类</h2>
+            <div class="category-filters">
+                <button class="filter-btn active">全部作品</button>
+                <button class="filter-btn">儿童摄影</button>
+                <button class="filter-btn">IP形象设计</button>
+                <button class="filter-btn">电商产品展示</button>
+                <button class="filter-btn">商品迁移</button>
+                <button class="filter-btn">LoRA模型</button>
+                <button class="filter-btn">风格转绘</button>
+                <button class="filter-btn">表情包</button>
+                <button class="filter-btn">创意乐园</button>
+            </div>
+
+            <div class="portfolio-grid">
+                <!-- 儿童摄影 - 包含多张照片 -->
+                <div class="portfolio-item">
+                    <div class="portfolio-carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-slide">
+                                <img src="images/儿童摄影/output (10).png" alt="儿童摄影" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/儿童摄影/ComfyUI_00249_clpnn_1744218171.png" alt="儿童摄影" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/儿童摄影/ComfyUI_00837_cnqck_1744638642.png" alt="儿童摄影" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/儿童摄影/ComfyUI_00842_agemf_1744642407.png" alt="儿童摄影" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/儿童摄影/ComfyUI_01177_oylvc_1744643670.png" alt="儿童摄影" class="gallery-img">
+                            </div>
+                        </div>
+                        <div class="carousel-nav">
+                            <div class="carousel-dot active"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                        </div>
+                        <div class="carousel-arrow carousel-prev">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="carousel-arrow carousel-next">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>童趣时光</h3>
+                        <span class="category">儿童摄影</span>
+                        <p>使用AI生成的儿童室内外场景，自然光线与生动表情完美结合。</p>
+                        <div class="image-count">
+                            <i class="fas fa-images"></i> 5 张作品
+                        </div>
+                        <button class="view-btn view-project" data-project="child-photography">查看全部</button>
+                    </div>
+                </div>
+
+                <!-- IP形象设计 - 包含多张照片 -->
+                <div class="portfolio-item">
+                    <div class="portfolio-carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-slide">
+                                <img src="images/IP形象设计/ComfyUI_00374_sbmqz_1744877196.png" alt="IP设计" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/IP形象设计/ComfyUI_00390_zhxbj_1744877208.png" alt="IP设计" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/IP形象设计/ComfyUI_00412_nahhs_1744877224.png" alt="IP设计" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/IP形象设计/ComfyUI_00447_jyrgj_1744880294.png" alt="IP设计" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/IP形象设计/ComfyUI_00457_seapo_1744880312.png" alt="IP设计" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/IP形象设计/ComfyUI_00464_hcrrr_1744880346.png" alt="IP设计" class="gallery-img">
+                            </div>
+                        </div>
+                        <div class="carousel-nav">
+                            <div class="carousel-dot active"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                        </div>
+                        <div class="carousel-arrow carousel-prev">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="carousel-arrow carousel-next">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>卡通人物系列</h3>
+                        <span class="category">IP形象设计</span>
+                        <p>为品牌设计的系列IP角色及三视图。</p>
+                        <div class="image-count">
+                            <i class="fas fa-images"></i> 6 张作品
+                        </div>
+                        <button class="view-btn view-project" data-project="ip-design">查看全部</button>
+                    </div>
+                </div>
+
+                <!-- 电商产品展示 - 包含多张照片 -->
+                <div class="portfolio-item">
+                    <div class="portfolio-carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-slide">
+                                <img src="images/电商产品展示/水杯.png" alt="电商展示" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/电商产品展示/ComfyUI_00736_kpvjg_1744045015.png" alt="电商展示" class="gallery-img">
+                            </div>
+                        </div>
+                        <div class="carousel-nav">
+                            <div class="carousel-dot active"></div>
+                            <div class="carousel-dot"></div>
+                        </div>
+                        <div class="carousel-arrow carousel-prev">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="carousel-arrow carousel-next">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>智能产品场景</h3>
+                        <span class="category">电商产品展示</span>
+                        <p>AI生成的产品场景图，突出产品功能与美学设计。</p>
+                        <div class="image-count">
+                            <i class="fas fa-images"></i> 2 张作品
+                        </div>
+                        <button class="view-btn view-project" data-project="ecommerce">查看全部</button>
+                    </div>
+                </div>
+
+                <!-- 商品迁移 - 包含多张照片 -->
+                <div class="portfolio-item">
+                    <div class="portfolio-carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-slide">
+                                <img src="images/商品迁移/生成项链图片 (1).png" alt="商品迁移" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/商品迁移/ComfyUI_00489_oodgp_1744888804.png" alt="商品迁移" class="gallery-img">
+                            </div>
+                        </div>
+                        <div class="carousel-nav">
+                            <div class="carousel-dot active"></div>
+                            <div class="carousel-dot"></div>
+                        </div>
+                        <div class="carousel-arrow carousel-prev">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="carousel-arrow carousel-next">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>时尚首饰场景迁移</h3>
+                        <span class="category">商品迁移</span>
+                        <p>时尚首饰在人物穿戴的展示效果，增强商品表现力。</p>
+                        <div class="image-count">
+                            <i class="fas fa-images"></i> 2 张作品
+                        </div>
+                        <button class="view-btn view-project" data-project="product-migration">查看全部</button>
+                    </div>
+                </div>
+
+                <!-- LoRA模型炼制 -->
+                <div class="portfolio-item">
+                    <div class="portfolio-carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-slide">
+                                <img src="images/LoRA模型/ComfyUI_00161_fhfsz_1745242257.jpg" alt="LoRA模型" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/LoRA模型/ComfyUI_00175_vyqan_1745242272.png" alt="LoRA模型" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/LoRA模型/ComfyUI_00568_fpguk_1745243552.jpg" alt="LoRA模型" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/LoRA模型/ComfyUI_00579_cudfm_1745243563.jpg" alt="LoRA模型" class="gallery-img">
+                            </div>
+                        </div>
+                        <div class="carousel-nav">
+                            <div class="carousel-dot active"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                        </div>
+                        <div class="carousel-arrow carousel-prev">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="carousel-arrow carousel-next">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>卡通渲染风格模型</h3>
+                        <span class="category">LoRA模型</span>
+                        <p>自定义训练的LoRA模型，实现独特的卡通渲染效果。</p>
+                        <div class="image-count">
+                            <i class="fas fa-images"></i> 4 张作品
+                        </div>
+                        <button class="view-btn view-project" data-project="lora-model">查看全部</button>
+                    </div>
+                </div>
+
+                <!-- 风格转绘 -->
+                <div class="portfolio-item">
+                    <div class="portfolio-carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-slide">
+                                <img src="images/风格转绘/ed54e413-00fb-44a6-b2ed-d5667b4c4f3c.jpg" alt="风格转绘" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/风格转绘/4-2.jpeg" alt="风格转绘" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/风格转绘/ComfyUI_00100_mixdv_1743862777.png" alt="风格转绘" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/风格转绘/ComfyUI_00145_okgos_1743864347.png" alt="风格转绘" class="gallery-img">
+                            </div>
+                        </div>
+                        <div class="carousel-nav">
+                            <div class="carousel-dot active"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                        </div>
+                        <div class="carousel-arrow carousel-prev">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="carousel-arrow carousel-next">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>多风格艺术转绘</h3>
+                        <span class="category">风格转绘</span>
+                        <p>将普通照片转化为不同艺术风格的作品。</p>
+                        <div class="image-count">
+                            <i class="fas fa-images"></i> 4 张作品
+                        </div>
+                        <button class="view-btn view-project" data-project="style-transfer">查看全部</button>
+                    </div>
+                </div>
+
+                <!-- 表情包 -->
+                <div class="portfolio-item">
+                    <div class="portfolio-carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-slide">
+                                <img src="images/表情包/ComfyUI_temp_rpqbr_00010_zpxzz_1755356404.png" alt="表情包" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/表情包/ComfyUI_temp_rpqbr_00011_yeogj_1755356404.png" alt="表情包" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/表情包/ComfyUI_temp_rpqbr_00012_jvpuv_1755356404.png" alt="表情包" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/表情包/ComfyUI_temp_rpqbr_00013_xtlxt_1755356404.png" alt="表情包" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/表情包/ComfyUI_temp_rpqbr_00014_bvmmv_1755356404.png" alt="表情包" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/表情包/ComfyUI_temp_rpqbr_00015_byycj_1755356404.png" alt="表情包" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/表情包/ComfyUI_temp_rpqbr_00016_ihzfy_1755356404.png" alt="表情包" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/表情包/ComfyUI_temp_rpqbr_00017_eigit_1755356404.png" alt="表情包" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/表情包/ComfyUI_temp_rpqbr_00018_xqcuz_1755356404.png" alt="表情包" class="gallery-img">
+                            </div>
+                        </div>
+                        <div class="carousel-nav">
+                            <div class="carousel-dot active"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                        </div>
+                        <div class="carousel-arrow carousel-prev">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="carousel-arrow carousel-next">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>小猫日常系列</h3>
+                        <span class="category">表情包</span>
+                        <p>9个不同的姿势表情包，生动形象展现。</p>
+                        <div class="image-count">
+                            <i class="fas fa-images"></i> 9 张作品
+                        </div>
+                        <button class="view-btn view-project" data-project="emoji">查看全部</button>
+                    </div>
+                </div>
+
+                <!-- 创意乐园 -->
+                <div class="portfolio-item">
+                    <div class="portfolio-carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-slide">
+                                <img src="images/创意乐园/9f6d3a65c11d271942f411dcc6e6f7e9cce9dff45eb1ad29ea25c5aa2ef2e1ea.png" alt="创意乐园" class="gallery-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/创意乐园/sbo.jpg" alt="创意乐园" class="gallery-img">
+                            </div>
+                        </div>
+                        <div class="carousel-nav">
+                            <div class="carousel-dot active"></div>
+                            <div class="carousel-dot"></div>
+                        </div>
+                        <div class="carousel-arrow carousel-prev">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="carousel-arrow carousel-next">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-info">
+                        <h3>奥比岛大道</h3>
+                        <span class="category">创意乐园</span>
+                        <p>AI创作的奇幻世界，展现无限想象力。</p>
+                        <div class="image-count">
+                            <i class="fas fa-images"></i> 2 张作品
+                        </div>
+                        <button class="view-btn view-project" data-project="creative-park">查看全部</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 图片模态框 -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="作品大图">
+            <div class="image-info" id="imageInfo"></div>
+        </div>
+    </div>
+
+    <!-- 项目详情模态框 -->
+    <div id="projectModal" class="project-modal">
+        <div class="project-modal-content">
+            <span class="project-modal-close">&times;</span>
+            <div class="project-header">
+                <h2 id="projectTitle">项目标题</h2>
+                <div class="project-category" id="projectCategory">分类</div>
+                <p class="project-description" id="projectDescription">项目描述</p>
+            </div>
+            <div class="project-gallery" id="projectGallery">
+                <!-- 项目图片将通过JS动态添加 -->
+            </div>
+        </div>
+    </div>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于作品集</h3>
+                    <p>本作品集展示使用ComfyUI工作流程创作的AI生成内容，涵盖多个创意领域。所有作品均为AI生成，展示人工智能在创意设计中的无限可能。</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-behance"></i></a>
+                        <a href="#"><i class="fab fa-dribbble"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>技术栈</h3>
+                    <p>主要工具：ComfyUI, Stable Diffusion</p>
+                    <p>辅助工具：Photoshop, Deepseek, 即梦</p>
+                    <p>模型训练：LoRA, fluxgym</p>
+                    <p>渲染技术：ControlNet, IPAdapter, Redux, ACE</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>联系信息</h3>
+                    <p><i class="fas fa-envelope"></i> lsong9527@163.com</p>
+                    <p><i class="fas fa-phone"></i> +86 17633934402</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 上海市浦东新区张江镇摩尔庄园102号</p>
+                </div>
+            </div>
+
+            <div class="copyright">
+                &copy; 2025 AIGC作品集 | 使用ComfyUI创作 | 本网站仅作展示用途
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 项目数据
+        const projects = {
+            "child-photography": {
+                title: "童趣时光",
+                category: "儿童摄影",
+                description: "使用AI生成的儿童室内外场景，自然光线与生动表情完美结合。这些作品展示了AI在儿童摄影领域的创新应用，捕捉了儿童纯真自然的瞬间。",
+                images: [
+                    "images/儿童摄影/output (10).png",
+                    "images/儿童摄影/ComfyUI_00249_clpnn_1744218171.png",
+                    "images/儿童摄影/ComfyUI_00837_cnqck_1744638642.png",
+                    "images/儿童摄影/ComfyUI_00842_agemf_1744642407.png",
+                    "images/儿童摄影/ComfyUI_01177_oylvc_1744643670.png"
+                ]
+            },
+            "ip-design": {
+                title: "卡通人物系列",
+                category: "IP形象设计",
+                description: "为品牌设计的系列IP角色及三视图。这些角色设计充满个性，适用于多种商业场景，包括品牌形象、周边产品和数字内容创作。",
+                images: [
+                    "images/IP形象设计/ComfyUI_00374_sbmqz_1744877196.png",
+                    "images/IP形象设计/ComfyUI_00390_zhxbj_1744877208.png",
+                    "images/IP形象设计/ComfyUI_00412_nahhs_1744877224.png",
+                    "images/IP形象设计/ComfyUI_00447_jyrgj_1744880294.png",
+                    "images/IP形象设计/ComfyUI_00457_seapo_1744880312.png",
+                    "images/IP形象设计/ComfyUI_00464_hcrrr_1744880346.png"
+                ]
+            },
+            "ecommerce": {
+                title: "智能产品场景",
+                category: "电商产品展示",
+                description: "AI生成的产品场景图，突出产品功能与美学设计。这些展示图适用于电商平台，帮助产品在竞争激烈的市场中脱颖而出。",
+                images: [
+                    "images/电商产品展示/水杯.png",
+                    "images/电商产品展示/ComfyUI_00736_kpvjg_1744045015.png"
+                ]
+            },
+            "product-migration": {
+                title: "时尚首饰场景迁移",
+                category: "商品迁移",
+                description: "时尚首饰在人物穿戴的展示效果，增强商品表现力。这些作品展示了如何将产品无缝融入不同场景，提升商品吸引力。",
+                images: [
+                    "images/商品迁移/生成项链图片 (1).png",
+                    "images/商品迁移/ComfyUI_00489_oodgp_1744888804.png"
+                ]
+            },
+            "lora-model": {
+                title: "卡通渲染风格模型",
+                category: "LoRA模型",
+                description: "自定义训练的LoRA模型，实现独特的卡通渲染效果。这些模型展示了AI在风格化渲染方面的强大能力，可用于游戏、动画等多种应用场景。",
+                images: [
+                    "images/LoRA模型/ComfyUI_00161_fhfsz_1745242257.jpg",
+                    "images/LoRA模型/ComfyUI_00175_vyqan_1745242272.png",
+                    "images/LoRA模型/ComfyUI_00568_fpguk_1745243552.jpg",
+                    "images/LoRA模型/ComfyUI_00579_cudfm_1745243563.jpg"
+                ]
+            },
+            "style-transfer": {
+                title: "多风格艺术转绘",
+                category: "风格转绘",
+                description: "将普通照片转化为不同艺术风格的作品。这些作品展示了AI在艺术创作领域的无限可能性，包括油画、水彩、漫画等多种风格转换。",
+                images: [
+                    "images/风格转绘/ed54e413-00fb-44a6-b2ed-d5667b4c4f3c.jpg",
+                    "images/风格转绘/4-2.jpeg",
+                    "images/风格转绘/ComfyUI_00100_mixdv_1743862777.png",
+                    "images/风格转绘/ComfyUI_00145_okgos_1743864347.png"
+                ]
+            },
+            "emoji": {
+                title: "小猫日常系列",
+                category: "表情包",
+                description: "9个不同场景的姿势表情包，生动形象展现。这些表情包适用于社交媒体、即时通讯等多种场景，为日常沟通增添趣味。",
+                images: [
+                    "images/表情包/ComfyUI_temp_rpqbr_00010_zpxzz_1755356404.png",
+                    "images/表情包/ComfyUI_temp_rpqbr_00011_yeogj_1755356404.png",
+                    "images/表情包/ComfyUI_temp_rpqbr_00012_jvpuv_1755356404.png",
+                    "images/表情包/ComfyUI_temp_rpqbr_00013_xtlxt_1755356404.png",
+                    "images/表情包/ComfyUI_temp_rpqbr_00014_bvmmv_1755356404.png",
+                    "images/表情包/ComfyUI_temp_rpqbr_00015_byycj_1755356404.png",
+                    "images/表情包/ComfyUI_temp_rpqbr_00016_ihzfy_1755356404.png",
+                    "images/表情包/ComfyUI_temp_rpqbr_00017_eigit_1755356404.png",
+                    "images/表情包/ComfyUI_temp_rpqbr_00018_xqcuz_1755356404.png"
+                ]
+            },
+            "creative-park": {
+                title: "奥比岛大道",
+                category: "创意乐园",
+                description: "AI创作的奇幻世界，展现无限想象力。这些作品展示了AI在概念艺术和创意设计领域的强大能力，可用于游戏、电影等多种创意产业。",
+                images: [
+                    "images/创意乐园/9f6d3a65c11d271942f411dcc6e6f7e9cce9dff45eb1ad29ea25c5aa2ef2e1ea.png",
+                    "images/创意乐园/sbo.jpg"
+                ]
+            }
+        };
+
+        // 粒子背景生成
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+
+                const size = Math.random() * 5 + 1;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const animationDuration = Math.random() * 20 + 10;
+                const animationDelay = Math.random() * 5;
+
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animation = `float ${animationDuration}s ease-in-out ${animationDelay}s infinite`;
+
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // 粒子浮动动画
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes float {
+                0%, 100% { transform: translate(0, 0); }
+                25% { transform: translate(${Math.random()*20-10}px, ${Math.random()*20-10}px); }
+                50% { transform: translate(${Math.random()*30-15}px, ${Math.random()*30-15}px); }
+                75% { transform: translate(${Math.random()*20-10}px, ${Math.random()*20-10}px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 页面加载后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 模拟加载过程
+            const loading = document.getElementById('loading');
+            setTimeout(() => {
+                loading.classList.add('hidden');
+            }, 1500);
+
+            createParticles();
+
+            // 向下箭头点击事件
+            document.getElementById('scrollDown').addEventListener('click', function() {
+                const portfolioSection = document.getElementById('portfolio');
+                window.scrollTo({
+                    top: portfolioSection.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+
+            // 滚动时头部变化
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+
+                // 显示/隐藏返回顶部按钮
+                const backToTop = document.getElementById('backToTop');
+                if (window.scrollY > 500) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            });
+
+            // 返回顶部功能
+            document.getElementById('backToTop').addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // 作品分类筛选功能
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    const filterValue = button.textContent;
+
+                    portfolioItems.forEach(item => {
+                        if (filterValue === '全部作品') {
+                            item.style.display = 'block';
+                        } else {
+                            const itemCategory = item.querySelector('.category').textContent;
+                            if (itemCategory === filterValue) {
+                                item.style.display = 'block';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+            });
+
+            // 导航平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // 轮播图功能
+            const carousels = document.querySelectorAll('.portfolio-carousel');
+
+            carousels.forEach(carousel => {
+                const inner = carousel.querySelector('.carousel-inner');
+                const slides = carousel.querySelectorAll('.carousel-slide');
+                const dots = carousel.querySelectorAll('.carousel-dot');
+                const prev = carousel.querySelector('.carousel-prev');
+                const next = carousel.querySelector('.carousel-next');
+
+                let currentIndex = 0;
+                const slideCount = slides.length;
+
+                // 更新轮播位置
+                function updateCarousel() {
+                    inner.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+                    // 更新指示点状态
+                    dots.forEach((dot, index) => {
+                        dot.classList.toggle('active', index === currentIndex);
+                    });
+                }
+
+                // 下一张
+                function nextSlide() {
+                    currentIndex = (currentIndex + 1) % slideCount;
+                    updateCarousel();
+                }
+
+                // 上一张
+                function prevSlide() {
+                    currentIndex = (currentIndex - 1 + slideCount) % slideCount;
+                    updateCarousel();
+                }
+
+                // 点击指示点跳转
+                dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => {
+                        currentIndex = index;
+                        updateCarousel();
+                    });
+                });
+
+                // 添加事件监听
+                if (next) next.addEventListener('click', nextSlide);
+                if (prev) prev.addEventListener('click', prevSlide);
+
+                // 自动轮播
+                setInterval(nextSlide, 5000);
+            });
+
+            // 图片点击放大功能
+            const galleryImages = document.querySelectorAll('.gallery-img');
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const modalInfo = document.getElementById('imageInfo');
+            const closeModal = document.querySelector('.close-modal');
+
+            galleryImages.forEach(img => {
+                img.addEventListener('click', function() {
+                    modal.style.display = 'flex';
+                    modalImg.src = this.src;
+                    modalInfo.textContent = this.alt;
+                });
+            });
+
+            // 关闭模态框
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+
+            // 点击模态框背景关闭
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            // 项目详情模态框
+            const projectModal = document.getElementById('projectModal');
+            const projectTitle = document.getElementById('projectTitle');
+            const projectCategory = document.getElementById('projectCategory');
+            const projectDescription = document.getElementById('projectDescription');
+            const projectGallery = document.getElementById('projectGallery');
+            const projectClose = document.querySelector('.project-modal-close');
+
+            // 查看全部按钮功能
+            document.querySelectorAll('.view-project').forEach(button => {
+                button.addEventListener('click', function() {
+                    const projectId = this.getAttribute('data-project');
+                    const project = projects[projectId];
+
+                    if (project) {
+                        // 更新项目信息
+                        projectTitle.textContent = project.title;
+                        projectCategory.textContent = project.category;
+                        projectDescription.textContent = project.description;
+
+                        // 清空并更新图片库
+                        projectGallery.innerHTML = '';
+                        project.images.forEach(imgSrc => {
+                            const imgContainer = document.createElement('div');
+                            imgContainer.className = 'project-image';
+
+                            const img = document.createElement('img');
+                            img.src = imgSrc;
+                            img.alt = project.title;
+
+                            imgContainer.appendChild(img);
+                            projectGallery.appendChild(imgContainer);
+
+                            // 添加点击事件，在模态框中查看大图
+                            img.addEventListener('click', function() {
+                                modal.style.display = 'flex';
+                                modalImg.src = this.src;
+                                modalInfo.textContent = project.title;
+                            });
+                        });
+
+                        // 显示项目模态框
+                        projectModal.style.display = 'block';
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+            });
+
+            // 关闭项目模态框
+            projectClose.addEventListener('click', function() {
+                projectModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+
+            // 点击模态框背景关闭
+            projectModal.addEventListener('click', function(e) {
+                if (e.target === projectModal) {
+                    projectModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+
+            // 添加滚动动画效果
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.portfolio-item, .section-title').forEach(el => {
+                el.style.opacity = 0;
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
