@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* (原有的CSS代码保持不变，只添加或修改部分) */
         * {
             margin: 0;
             padding: 0;
@@ -332,6 +333,7 @@
             width: 100%;
             overflow: hidden;
             position: relative;
+            background: #2a2a46; /* 添加背景色以防止闪烁 */
         }
 
         .carousel-inner {
@@ -346,10 +348,20 @@
             position: relative;
         }
 
+        /* 修改：懒加载图片样式 */
+        .carousel-slide img.lazy {
+            background-color: #333; /* 占位背景色 */
+        }
+
         .carousel-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: opacity 0.5s ease;
+        }
+
+        .carousel-slide img.lazy-loaded {
+            opacity: 1;
         }
 
         .carousel-nav {
@@ -906,7 +918,6 @@
     </style>
 </head>
 <body>
-    <!-- 加载指示器 -->
     <div class="loading" id="loading">
         <div>
             <div class="spinner"></div>
@@ -922,7 +933,6 @@
     <div class="decor decor-2"></div>
     <div class="decor decor-3"></div>
 
-    <!-- 返回顶部按钮 -->
     <div class="back-to-top" id="backToTop">
         <i class="fas fa-arrow-up"></i>
     </div>
@@ -957,36 +967,35 @@
         <div class="container">
             <h2 class="section-title">作品分类</h2>
             <div class="category-filters">
-                <button class="filter-btn active">全部作品</button>
-                <button class="filter-btn">儿童摄影</button>
-                <button class="filter-btn">IP形象设计</button>
-                <button class="filter-btn">电商产品展示</button>
-                <button class="filter-btn">商品迁移</button>
-                <button class="filter-btn">LoRA模型</button>
-                <button class="filter-btn">风格转绘</button>
-                <button class="filter-btn">表情包</button>
-                <button class="filter-btn">创意乐园</button>
+                <button class="filter-btn active" data-filter="全部作品">全部作品</button>
+                <button class="filter-btn" data-filter="儿童摄影">儿童摄影</button>
+                <button class="filter-btn" data-filter="IP形象设计">IP形象设计</button>
+                <button class="filter-btn" data-filter="电商产品展示">电商产品展示</button>
+                <button class="filter-btn" data-filter="商品迁移">商品迁移</button>
+                <button class="filter-btn" data-filter="LoRA模型">LoRA模型</button>
+                <button class="filter-btn" data-filter="风格转绘">风格转绘</button>
+                <button class="filter-btn" data-filter="表情包">表情包</button>
+                <button class="filter-btn" data-filter="创意乐园">创意乐园</button>
             </div>
 
             <div class="portfolio-grid">
-                <!-- 儿童摄影 - 包含多张照片 -->
-                <div class="portfolio-item">
+                <div class="portfolio-item" data-category="儿童摄影">
                     <div class="portfolio-carousel">
                         <div class="carousel-inner">
                             <div class="carousel-slide">
-                                <img src="images/儿童摄影/output (10).png" alt="儿童摄影" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/儿童摄影/output (10).png" alt="儿童摄影">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/儿童摄影/ComfyUI_00249_clpnn_1744218171.png" alt="儿童摄影" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/儿童摄影/ComfyUI_00249_clpnn_1744218171.png" alt="儿童摄影">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/儿童摄影/ComfyUI_00837_cnqck_1744638642.png" alt="儿童摄影" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/儿童摄影/ComfyUI_00837_cnqck_1744638642.png" alt="儿童摄影">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/儿童摄影/ComfyUI_00842_agemf_1744642407.png" alt="儿童摄影" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/儿童摄影/ComfyUI_00842_agemf_1744642407.png" alt="儿童摄影">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/儿童摄影/ComfyUI_01177_oylvc_1744643670.png" alt="儿童摄影" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/儿童摄影/ComfyUI_01177_oylvc_1744643670.png" alt="儿童摄影">
                             </div>
                         </div>
                         <div class="carousel-nav">
@@ -1014,27 +1023,26 @@
                     </div>
                 </div>
 
-                <!-- IP形象设计 - 包含多张照片 -->
-                <div class="portfolio-item">
+                <div class="portfolio-item" data-category="IP形象设计">
                     <div class="portfolio-carousel">
                         <div class="carousel-inner">
                             <div class="carousel-slide">
-                                <img src="images/IP形象设计/ComfyUI_00374_sbmqz_1744877196.png" alt="IP设计" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/IP形象设计/ComfyUI_00374_sbmqz_1744877196.png" alt="IP设计">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/IP形象设计/ComfyUI_00390_zhxbj_1744877208.png" alt="IP设计" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/IP形象设计/ComfyUI_00390_zhxbj_1744877208.png" alt="IP设计">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/IP形象设计/ComfyUI_00412_nahhs_1744877224.png" alt="IP设计" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/IP形象设计/ComfyUI_00412_nahhs_1744877224.png" alt="IP设计">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/IP形象设计/ComfyUI_00447_jyrgj_1744880294.png" alt="IP设计" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/IP形象设计/ComfyUI_00447_jyrgj_1744880294.png" alt="IP设计">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/IP形象设计/ComfyUI_00457_seapo_1744880312.png" alt="IP设计" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/IP形象设计/ComfyUI_00457_seapo_1744880312.png" alt="IP设计">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/IP形象设计/ComfyUI_00464_hcrrr_1744880346.png" alt="IP设计" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/IP形象设计/ComfyUI_00464_hcrrr_1744880346.png" alt="IP设计">
                             </div>
                         </div>
                         <div class="carousel-nav">
@@ -1063,15 +1071,14 @@
                     </div>
                 </div>
 
-                <!-- 电商产品展示 - 包含多张照片 -->
-                <div class="portfolio-item">
+                <div class="portfolio-item" data-category="电商产品展示">
                     <div class="portfolio-carousel">
                         <div class="carousel-inner">
                             <div class="carousel-slide">
-                                <img src="images/电商产品展示/水杯.png" alt="电商展示" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/电商产品展示/水杯.png" alt="电商展示">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/电商产品展示/ComfyUI_00736_kpvjg_1744045015.png" alt="电商展示" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/电商产品展示/ComfyUI_00736_kpvjg_1744045015.png" alt="电商展示">
                             </div>
                         </div>
                         <div class="carousel-nav">
@@ -1096,15 +1103,14 @@
                     </div>
                 </div>
 
-                <!-- 商品迁移 - 包含多张照片 -->
-                <div class="portfolio-item">
+                <div class="portfolio-item" data-category="商品迁移">
                     <div class="portfolio-carousel">
                         <div class="carousel-inner">
                             <div class="carousel-slide">
-                                <img src="images/商品迁移/生成项链图片 (1).png" alt="商品迁移" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/商品迁移/生成项链图片 (1).png" alt="商品迁移">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/商品迁移/ComfyUI_00489_oodgp_1744888804.png" alt="商品迁移" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/商品迁移/ComfyUI_00489_oodgp_1744888804.png" alt="商品迁移">
                             </div>
                         </div>
                         <div class="carousel-nav">
@@ -1129,21 +1135,20 @@
                     </div>
                 </div>
 
-                <!-- LoRA模型炼制 -->
-                <div class="portfolio-item">
+                <div class="portfolio-item" data-category="LoRA模型">
                     <div class="portfolio-carousel">
                         <div class="carousel-inner">
                             <div class="carousel-slide">
-                                <img src="images/LoRA模型/ComfyUI_00161_fhfsz_1745242257.jpg" alt="LoRA模型" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/LoRA模型/ComfyUI_00161_fhfsz_1745242257.jpg" alt="LoRA模型">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/LoRA模型/ComfyUI_00175_vyqan_1745242272.png" alt="LoRA模型" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/LoRA模型/ComfyUI_00175_vyqan_1745242272.png" alt="LoRA模型">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/LoRA模型/ComfyUI_00568_fpguk_1745243552.jpg" alt="LoRA模型" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/LoRA模型/ComfyUI_00568_fpguk_1745243552.jpg" alt="LoRA模型">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/LoRA模型/ComfyUI_00579_cudfm_1745243563.jpg" alt="LoRA模型" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/LoRA模型/ComfyUI_00579_cudfm_1745243563.jpg" alt="LoRA模型">
                             </div>
                         </div>
                         <div class="carousel-nav">
@@ -1170,21 +1175,20 @@
                     </div>
                 </div>
 
-                <!-- 风格转绘 -->
-                <div class="portfolio-item">
+                <div class="portfolio-item" data-category="风格转绘">
                     <div class="portfolio-carousel">
                         <div class="carousel-inner">
                             <div class="carousel-slide">
-                                <img src="images/风格转绘/ed54e413-00fb-44a6-b2ed-d5667b4c4f3c.jpg" alt="风格转绘" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/风格转绘/ed54e413-00fb-44a6-b2ed-d5667b4c4f3c.jpg" alt="风格转绘">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/风格转绘/4-2.jpeg" alt="风格转绘" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/风格转绘/4-2.jpeg" alt="风格转绘">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/风格转绘/ComfyUI_00100_mixdv_1743862777.png" alt="风格转绘" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/风格转绘/ComfyUI_00100_mixdv_1743862777.png" alt="风格转绘">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/风格转绘/ComfyUI_00145_okgos_1743864347.png" alt="风格转绘" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/风格转绘/ComfyUI_00145_okgos_1743864347.png" alt="风格转绘">
                             </div>
                         </div>
                         <div class="carousel-nav">
@@ -1211,36 +1215,35 @@
                     </div>
                 </div>
 
-                <!-- 表情包 -->
-                <div class="portfolio-item">
+                <div class="portfolio-item" data-category="表情包">
                     <div class="portfolio-carousel">
                         <div class="carousel-inner">
                             <div class="carousel-slide">
-                                <img src="images/表情包/ComfyUI_temp_rpqbr_00010_zpxzz_1755356404.png" alt="表情包" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/表情包/ComfyUI_temp_rpqbr_00010_zpxzz_1755356404.png" alt="表情包">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/表情包/ComfyUI_temp_rpqbr_00011_yeogj_1755356404.png" alt="表情包" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/表情包/ComfyUI_temp_rpqbr_00011_yeogj_1755356404.png" alt="表情包">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/表情包/ComfyUI_temp_rpqbr_00012_jvpuv_1755356404.png" alt="表情包" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/表情包/ComfyUI_temp_rpqbr_00012_jvpuv_1755356404.png" alt="表情包">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/表情包/ComfyUI_temp_rpqbr_00013_xtlxt_1755356404.png" alt="表情包" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/表情包/ComfyUI_temp_rpqbr_00013_xtlxt_1755356404.png" alt="表情包">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/表情包/ComfyUI_temp_rpqbr_00014_bvmmv_1755356404.png" alt="表情包" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/表情包/ComfyUI_temp_rpqbr_00014_bvmmv_1755356404.png" alt="表情包">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/表情包/ComfyUI_temp_rpqbr_00015_byycj_1755356404.png" alt="表情包" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/表情包/ComfyUI_temp_rpqbr_00015_byycj_1755356404.png" alt="表情包">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/表情包/ComfyUI_temp_rpqbr_00016_ihzfy_1755356404.png" alt="表情包" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/表情包/ComfyUI_temp_rpqbr_00016_ihzfy_1755356404.png" alt="表情包">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/表情包/ComfyUI_temp_rpqbr_00017_eigit_1755356404.png" alt="表情包" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/表情包/ComfyUI_temp_rpqbr_00017_eigit_1755356404.png" alt="表情包">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/表情包/ComfyUI_temp_rpqbr_00018_xqcuz_1755356404.png" alt="表情包" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/表情包/ComfyUI_temp_rpqbr_00018_xqcuz_1755356404.png" alt="表情包">
                             </div>
                         </div>
                         <div class="carousel-nav">
@@ -1272,15 +1275,14 @@
                     </div>
                 </div>
 
-                <!-- 创意乐园 -->
-                <div class="portfolio-item">
+                <div class="portfolio-item" data-category="创意乐园">
                     <div class="portfolio-carousel">
                         <div class="carousel-inner">
                             <div class="carousel-slide">
-                                <img src="images/创意乐园/9f6d3a65c11d271942f411dcc6e6f7e9cce9dff45eb1ad29ea25c5aa2ef2e1ea.png" alt="创意乐园" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/创意乐园/9f6d3a65c11d271942f411dcc6e6f7e9cce9dff45eb1ad29ea25c5aa2ef2e1ea.png" alt="创意乐园">
                             </div>
                             <div class="carousel-slide">
-                                <img src="images/创意乐园/sbo.jpg" alt="创意乐园" class="gallery-img">
+                                <img class="gallery-img lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="images/创意乐园/sbo.jpg" alt="创意乐园">
                             </div>
                         </div>
                         <div class="carousel-nav">
@@ -1308,7 +1310,6 @@
         </div>
     </section>
 
-    <!-- 图片模态框 -->
     <div id="imageModal" class="modal">
         <span class="close-modal">&times;</span>
         <div class="modal-content">
@@ -1317,7 +1318,6 @@
         </div>
     </div>
 
-    <!-- 项目详情模态框 -->
     <div id="projectModal" class="project-modal">
         <div class="project-modal-content">
             <span class="project-modal-close">&times;</span>
@@ -1327,8 +1327,7 @@
                 <p class="project-description" id="projectDescription">项目描述</p>
             </div>
             <div class="project-gallery" id="projectGallery">
-                <!-- 项目图片将通过JS动态添加 -->
-            </div>
+                </div>
         </div>
     </div>
 
@@ -1500,6 +1499,34 @@
         `;
         document.head.appendChild(style);
 
+        // **新的懒加载函数**
+        function lazyLoadImages() {
+            const lazyImages = document.querySelectorAll('img.lazy');
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        const src = img.getAttribute('data-src');
+                        if (src) {
+                            img.src = src;
+                            img.onload = () => {
+                                img.classList.add('lazy-loaded');
+                                img.removeAttribute('data-src');
+                            };
+                            observer.unobserve(img);
+                        }
+                    }
+                });
+            }, {
+                rootMargin: '0px 0px 200px 0px', // 提前200px加载
+                threshold: 0
+            });
+
+            lazyImages.forEach(img => {
+                observer.observe(img);
+            });
+        }
+
         // 页面加载后执行
         document.addEventListener('DOMContentLoaded', function() {
             // 模拟加载过程
@@ -1509,6 +1536,7 @@
             }, 1500);
 
             createParticles();
+            lazyLoadImages(); // **调用懒加载函数**
 
             // 向下箭头点击事件
             document.getElementById('scrollDown').addEventListener('click', function() {
@@ -1560,7 +1588,7 @@
                         if (filterValue === '全部作品') {
                             item.style.display = 'block';
                         } else {
-                            const itemCategory = item.querySelector('.category').textContent;
+                            const itemCategory = item.getAttribute('data-category');
                             if (itemCategory === filterValue) {
                                 item.style.display = 'block';
                             } else {
@@ -1596,6 +1624,7 @@
 
                 let currentIndex = 0;
                 const slideCount = slides.length;
+                let autoSlideInterval;
 
                 // 更新轮播位置
                 function updateCarousel() {
@@ -1605,6 +1634,17 @@
                     dots.forEach((dot, index) => {
                         dot.classList.toggle('active', index === currentIndex);
                     });
+                }
+
+                // 启动自动轮播
+                function startAutoSlide() {
+                    stopAutoSlide(); // 确保只有一个计时器在运行
+                    autoSlideInterval = setInterval(nextSlide, 5000);
+                }
+
+                // 停止自动轮播
+                function stopAutoSlide() {
+                    clearInterval(autoSlideInterval);
                 }
 
                 // 下一张
@@ -1624,15 +1664,30 @@
                     dot.addEventListener('click', () => {
                         currentIndex = index;
                         updateCarousel();
+                        startAutoSlide(); // 用户交互后重新计时
                     });
                 });
 
                 // 添加事件监听
-                if (next) next.addEventListener('click', nextSlide);
-                if (prev) prev.addEventListener('click', prevSlide);
+                if (next) {
+                    next.addEventListener('click', () => {
+                        nextSlide();
+                        startAutoSlide(); // 用户交互后重新计时
+                    });
+                }
+                if (prev) {
+                    prev.addEventListener('click', () => {
+                        prevSlide();
+                        startAutoSlide(); // 用户交互后重新计时
+                    });
+                }
 
-                // 自动轮播
-                setInterval(nextSlide, 5000);
+                // 初始启动自动轮播
+                startAutoSlide();
+
+                // 鼠标移入/移出暂停/恢复自动轮播
+                carousel.addEventListener('mouseenter', stopAutoSlide);
+                carousel.addEventListener('mouseleave', startAutoSlide);
             });
 
             // 图片点击放大功能
@@ -1645,7 +1700,8 @@
             galleryImages.forEach(img => {
                 img.addEventListener('click', function() {
                     modal.style.display = 'flex';
-                    modalImg.src = this.src;
+                    // 使用 data-src 或 src，根据懒加载状态来决定
+                    modalImg.src = this.getAttribute('data-src') || this.src;
                     modalInfo.textContent = this.alt;
                 });
             });
@@ -1689,7 +1745,9 @@
                             imgContainer.className = 'project-image';
 
                             const img = document.createElement('img');
-                            img.src = imgSrc;
+                            img.className = 'lazy'; // 添加懒加载类
+                            img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; // 占位符
+                            img.setAttribute('data-src', imgSrc);
                             img.alt = project.title;
 
                             imgContainer.appendChild(img);
@@ -1702,6 +1760,8 @@
                                 modalInfo.textContent = project.title;
                             });
                         });
+
+                        lazyLoadImages(); // 重新加载新添加的懒加载图片
 
                         // 显示项目模态框
                         projectModal.style.display = 'block';
